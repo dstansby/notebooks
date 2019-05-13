@@ -56,7 +56,7 @@ import matplotlib.pyplot as plt
 import sunpy.map
 
 aiamap = sunpy.map.Map(downloaded_files[0])
-fig, ax = plt.subplots()
+ax = plt.subplot(projection=aiamap)
 aiamap.plot(ax)
 
 
