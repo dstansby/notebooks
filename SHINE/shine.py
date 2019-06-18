@@ -122,17 +122,47 @@ for col in data.columns:
 
 
 from astropy.visualization import quantity_support
-quantity_support()  
-fig, axs = plt.subplots(figsize=(10, 6), nrows=2, sharex=True)
+quantity_support()
+
+fig, axs = plt.subplots(figsize=(10, 6), nrows=3, sharex=True)
 
 ax = axs[0]
-ax.plot(data.index, data.quantity('Plasma Flow Speed'))
-# Manually set ylim because badvalues are not set to NaN yet; see https://github.com/heliopython/heliopy/issues/683
-ax.set_ylim(0, 800)
+ax.plot(data.index, data.quantity('Plasma Flow Speed'), label='$v_{sw}$')
 ax.axvline(datetime(2018, 11, 5), color='k')
 
 ax = axs[1]
-ax.scatter(data.index, data.quantity('Long. Angle of Aver. Field Vector'), s=1)
-# Manually set ylim because badvalues are not set to NaN yet; see https://github.com/heliopython/heliopy/issues/683
-ax.set_ylim(0, 360)
+ax.plot(data.index, data.quantity('|B|'), label='$|B|$')
+
+ax = axs[2]
+ax.plot(data.index, data.quantity('Proton Density'), label='$n_{p}$')
+
+
+# Improving figure formatting
+# ---
+
+# In[10]:
+
+
+# Add a legend to each axes
+for ax in axs:
+    ax.legend()
+# Make the x-axis formatting nicer
+fig.autofmt_xdate()
+fig.subplots_adjust(hspace=0)
+# Move the middle y-axis to the right hand side
+axs[1].yaxis.tick_right()
+# Line up the y-axis labels
+fig.align_labels()
+
+# Show figure again
+fig
+
+
+# Save a copy of the figure
+# ---
+
+# In[11]:
+
+
+fig.savefig('tseries.pdf', bbox_inches='tight')
 
